@@ -8,7 +8,7 @@
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/mit-license.php
  */
-	(function($){
+(function($){
  
 	// function definition
 	$.fn.jsonComplete = function(url, opts) {
@@ -31,6 +31,13 @@
 			}
 			list.hide();
 			
+			// hide/show list on element blur
+			obj.blur(function(){
+				// FIXME
+			});
+			
+			// Keyboard interaction
+			
 			// disable form submission from Return keypress on text-field
 			// keypress is needed for Opera :(
 			obj.bind('keydown keypress', function(ev){
@@ -42,11 +49,8 @@
 				
 				o.data = $.extend(o.data, { value: obj.val() });
 				
-				obj.focus();
-				
 				// skip left, right
 				if(ev.keyCode in {'37':'', '39':''}) { return false; }
-				
 				
 				// special cases(up - 38, down - 40, esc - 27, enter - 13)
 				switch(ev.keyCode) {					
@@ -64,8 +68,10 @@
 						list.hide();
 					break;
 					case 13: // RETURN
-						obj.val(list.children('li:visible').eq(currentSelection).text());
+						el = list.children('li:visible').eq(currentSelection);
+						obj.val(el.text());
 						list.hide();
+						o.afterSelect(el);
 					break;
 					
 					// perform AJAX request
@@ -87,26 +93,39 @@
 							else {
 								currentSelection = 0;
 								list.show();
-								list.children('li:visible').eq(currentSelection).addClass('selected');
+								setSelected(list, currentSelection);
 							}
-					
+							
 						});
 					break;
 				}
-				
-				// select and highlight correct children
-				list.children('li').removeClass('selected');
-				list.children('li:visible').eq(currentSelection).addClass('selected');
 			});
-		
+			
+			// Mouse interaction
+			
+			$("ul#"+o.id+" li").live('mouseover', function() {
+				currentSelection = list.children('li:visible').index(this);
+				setSelected(list, currentSelection);
+			}).live('click', function(){
+				el = list.children('li:visible').eq(currentSelection);
+				obj.val(el.text());
+				list.hide();
+				o.afterSelect(el);
+			});
 		});
 	};
+	
+	// private function to set selected element
+	function setSelected(list, index) {
+		list.children('li').removeClass('selected');
+		list.children('li:visible').eq(index).addClass('selected');
+	}
 	 
 	// default options
 	$.fn.jsonComplete.defaults = {
-		id: 'autocomplete',  //
-		data: {},
-		callback: function(){}
+		id: 'autocomplete',        //
+		data: {},                  //
+		afterSelect: function(){}  //
 	};
 	
 	// contains, case-insensitive
