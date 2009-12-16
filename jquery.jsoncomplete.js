@@ -61,6 +61,7 @@
 						if(currentSelection != list.children('li:visible').length - 1) {
 							currentSelection++;
 						}
+						console.log(currentSelection);
 						if(list.is(':hidden')){ list.show(); }
 					break;
 					case 27: // ESC
@@ -99,6 +100,9 @@
 						});
 					break;
 				}
+				
+				// highlight correct element	
+				setSelected(list, currentSelection);
 			});
 			
 			// Mouse interaction
