@@ -8,7 +8,7 @@
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/mit-license.php
  */
-(function($){
+	(function($){
  
 	// function definition
 	$.fn.jsonComplete = function(url, opts) {
@@ -32,7 +32,8 @@
 			list.hide();
 			
 			// disable form submission from Return keypress on text-field
-			obj.keydown(function(ev){
+			// keypress is needed for Opera :(
+			obj.bind('keydown keypress', function(ev){
 				if(ev.keyCode == 13) { return false; }
 			});
 			
