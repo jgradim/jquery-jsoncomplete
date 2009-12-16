@@ -1,12 +1,12 @@
 /*
  * jsonComplete 0.7 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
- * 
+ *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
  * Copyright (c) 2009 João Gradim
  *
  * Licensed under the MIT license:
- *   http://www.opensource.org/licenses/mit-license.php
+ * http://www.opensource.org/licenses/mit-license.php
  */
 (function($){
  
@@ -15,6 +15,7 @@
 	
 		var o = $.extend({}, $.fn.jsonComplete.defaults, opts);
 	
+		// "global" vars
 		var currentSelection = -1;
 		 
 		return this.each(function() {
@@ -30,20 +31,21 @@
 			}
 			list.hide();
 			
-			// disable form submission from Enter keypress on text-field
-			obj.parents('form').submit(function(ev) {
-				if($(ev.originalEvent.explicitOriginalTarget).get(0) == obj.get(0)) {
-					return false;
-				}
+			// disable form submission from Return keypress on text-field
+			obj.keydown(function(ev){
+				if(ev.keyCode == 13) { return false; }
 			});
 			
 			// define keypress events
-			obj.keypress(function(ev){
+			obj.keyup(function(ev){
 				
 				o.data = $.extend(o.data, { value: obj.val() });
 				
+				obj.focus();
+				
 				// skip left, right
 				if(ev.keyCode in {'37':'', '39':''}) { return false; }
+				
 				
 				// special cases(up - 38, down - 40, esc - 27, enter - 13)
 				switch(ev.keyCode) {					
@@ -60,11 +62,9 @@
 						currentSelection = -1;
 						list.hide();
 					break;
-					case 13: // enter
+					case 13: // RETURN
 						obj.val(list.children('li:visible').eq(currentSelection).text());
 						list.hide();
-						//callback();
-						return false;
 					break;
 					
 					// perform AJAX request
@@ -111,8 +111,8 @@
 	// contains, case-insensitive
 	$.extend($.expr[":"], {
 		"contains-ci": function(elem, i, match, array) {
-        return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
-    }
+			return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+		}
 	});  
 
 })(jQuery);
