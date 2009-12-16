@@ -1,0 +1,32 @@
+h2. jQuery jsonComplete
+
+h3. DESCRIPTION
+
+A minimal plugin to provide autocomplete for text fields funcionality based on an array of JSON objects.
+
+h3. USAGE
+
+<pre><code>    $("input#id").jsonComplete(url, options);
+</code></pre>
+
+Where <code>url</code> is the URL for the AJAX call and <code>options</code> is an object with custom options.
+
+h3. OPTIONS
+
+|*Option*|*Description*|*Default Value*|
+|id||'autocomplete'|
+|data||{}|
+|callback||function(){}|
+
+h3. NOTES
+
+This plugin provides a new filter for jQuery, :contains-ci - it's basically :contains, case-insensitive!
+
+---
+
+h3. CHANGELOG
+
+
+h4. v0.7 Dec 16, 2009
+
+First, unstable version of the plugin.
