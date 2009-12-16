@@ -1,3 +1,13 @@
+/*
+ * jsonComplete 0.7 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * 
+ * http://github.com/jgradim/jquery-jsoncomplete/
+ *
+ * Copyright (c) 2009 João Gradim
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ */
 (function($){
  
 	// function definition
