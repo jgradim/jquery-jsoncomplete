@@ -31,6 +31,12 @@
 			}
 			list.hide();
 			
+			// create a hidden field to hold the value of the selected element?
+			if(o.hiddenField) {
+				// $().attr can't change input's 'type' attribute :(
+				obj.after('<input type="hidden" id="'+o.hiddenField+'" name="'+o.hiddenField+'" />');
+			}
+			
 			// hide/show list on element blur
 			obj.blur(function(){
 				// FIXME
@@ -72,7 +78,13 @@
 						el = list.children('li:visible').eq(currentSelection);
 						obj.val(el.text());
 						list.hide();
-						o.afterSelect(el);
+						
+						// set hidden field value?
+						if(o.hiddenField) {
+							$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
+						}
+						
+						o.afterSelect(toJSON(el));
 					break;
 					
 					// perform AJAX request
@@ -114,7 +126,13 @@
 				el = list.children('li:visible').eq(currentSelection);
 				obj.val(el.text());
 				list.hide();
-				o.afterSelect(el);
+						
+				// set hidden field value?
+				if(o.hiddenField) {
+					$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
+				}
+						
+				o.afterSelect(toJSON(el));
 			});
 		});
 	};
@@ -124,10 +142,17 @@
 		list.children('li').removeClass('selected');
 		list.children('li:visible').eq(index).addClass('selected');
 	}
+	function toJSON(el){
+		return {
+			id: el.attr('id').numeralAfter('v-'),
+			value: el.text()
+		}
+	}
 	 
 	// default options
 	$.fn.jsonComplete.defaults = {
 		id: 'autocomplete',        //
+		hiddenField: 'jsoncomplete-value', //
 		data: {},                  //
 		afterSelect: function(){}  //
 	};
@@ -137,6 +162,11 @@
 		"contains-ci": function(elem, i, match, array) {
 			return (elem.textContent || elem.innerText || "").toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
 		}
-	});  
+	});
+	
+	//
+	String.prototype.numeralAfter = function(prefix) {	
+		return this.match(RegExp(prefix+"(\\d+)"))[1];
+	}
 
 })(jQuery);
