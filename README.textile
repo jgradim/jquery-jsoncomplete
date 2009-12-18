@@ -33,9 +33,15 @@ This plugin provides a new filter for jQuery, :contains-ci - it's basically :con
 
 h3. CHANGELOG
 
+h4. v0.9 Dec 18, 2009
+
+* Added query caching to limit AJAX requests.
+
+
 h4. v0.8 Dec 18, 2009
 
 * Added hidden field support to hold the value of the selected element
+
 
 h4. v0.7 Dec 16, 2009
 

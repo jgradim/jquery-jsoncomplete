@@ -1,5 +1,5 @@
 /*
- * jsonComplete 0.7 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * jsonComplete 0.9 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
  *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
