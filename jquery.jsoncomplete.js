@@ -14,14 +14,15 @@
 	$.fn.jsonComplete = function(url, opts) {
 	
 		var o = $.extend({}, $.fn.jsonComplete.defaults, opts);
-	
-		// "global" vars
-		var currentSelection = -1;
-		 
 		return this.each(function() {
 		
 			var obj = $(this);
 			obj.attr('autocomplete', 'off');
+			
+			// query cache, initially empty
+			querycache = {};
+			// element currently selected
+			var currentSelection = -1;
 			
 			// check if list exists, create it otherwise
 			var list = $("ul#"+o.id);
@@ -35,6 +36,20 @@
 			if(o.hiddenField) {
 				// $().attr can't change input's 'type' attribute :(
 				obj.after('<input type="hidden" id="'+o.hiddenField+'" name="'+o.hiddenField+'" />');
+			}
+			
+			// filter visible elements
+			function filterVisible(){
+				$("ul#"+o.id+" li").show().not(':contains-ci("'+obj.val()+'")').hide();
+				if($.trim(obj.val()) == ''/* || $("ul#"+o.id+" li:visible").length == 0*/) {
+					list.hide();
+					currentSelection = -1;
+				}
+				else {
+					currentSelection = 0;
+					list.show();
+					setSelected(list, currentSelection);
+				}
 			}
 			
 			// hide/show list on element blur
@@ -51,7 +66,7 @@
 			});
 			
 			// define keypress events
-			obj.keyup(function(ev){
+			obj.keyup(function(ev) {
 				
 				o.data = $.extend(o.data, { value: obj.val() });
 				
@@ -89,27 +104,29 @@
 					
 					// perform AJAX request
 					default:
-						// ajax request
-						$.getJSON(url, o.data, function(json){
-							for(var i = 0; i < json.length; i++) {
-								if ($("li#v-"+json[i].id).length == 0) {
-									list.append('<li id="v-'+json[i].id+'">'+json[i].value+'</li>');
-								}
-							}
 					
-							// filter results and hide/show list
-							$("ul#"+o.id+" li").show().not(':contains-ci("'+obj.val()+'")').hide();
-							if($.trim(obj.val()) == ''/* || $("ul#"+o.id+" li:visible").length == 0*/) {
-								list.hide();
-								currentSelection = -1;
-							}
-							else {
-								currentSelection = 0;
-								list.show();
-								setSelected(list, currentSelection);
-							}
+						// perform query or just filter results?
+						if(!(o.data.value in querycache)) {
+						
+							// ajax request
+							$.getJSON(url, o.data, function(json){
+								for(var i = 0; i < json.length; i++) {
+									if ($("li#v-"+json[i].id).length == 0) {
+										list.append('<li id="v-'+json[i].id+'">'+json[i].value+'</li>');
+									}
+								}
+								
+								// add value to query cache
+								querycache[o.data.value] = '';
 							
-						});
+								// filter results and hide/show list
+								filterVisible();
+							
+							});
+						} else {
+							// filter results and hide/show list
+							filterVisible();
+						}
 					break;
 				}
 				
@@ -118,7 +135,6 @@
 			});
 			
 			// Mouse interaction
-			
 			$("ul#"+o.id+" li").live('mouseover', function() {
 				currentSelection = list.children('li:visible').index(this);
 				setSelected(list, currentSelection);
@@ -142,6 +158,7 @@
 		list.children('li').removeClass('selected');
 		list.children('li:visible').eq(index).addClass('selected');
 	}
+	//
 	function toJSON(el){
 		return {
 			id: el.attr('id').numeralAfter('v-'),
