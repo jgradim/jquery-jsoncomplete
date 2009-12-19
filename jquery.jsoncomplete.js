@@ -1,5 +1,5 @@
 /*
- * jsonComplete 0.9 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * jsonComplete 0.91 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
  *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
@@ -41,7 +41,7 @@
 			// filter visible elements
 			function filterVisible(){
 				$("ul#"+o.id+" li").show().not(':contains-ci("'+obj.val()+'")').hide();
-				if($.trim(obj.val()) == ''/* || $("ul#"+o.id+" li:visible").length == 0*/) {
+				if($.trim(obj.val()) == '') {
 					list.hide();
 					currentSelection = -1;
 				}
@@ -49,6 +49,12 @@
 					currentSelection = 0;
 					list.show();
 					setSelected(list, currentSelection);
+					
+					// hide if no results found
+					if($("ul#"+o.id+" li:visible").length == 0) {
+						list.hide();
+						currentSelection = -1;					
+					}
 				}
 			}
 			
@@ -82,7 +88,6 @@
 						if(currentSelection != list.children('li:visible').length - 1) {
 							currentSelection++;
 						}
-						console.log(currentSelection);
 						if(list.is(':hidden')){ list.show(); }
 					break;
 					case 27: // ESC
@@ -90,9 +95,11 @@
 						list.hide();
 					break;
 					case 13: // RETURN
-						el = list.children('li:visible').eq(currentSelection);
-						obj.val(el.text());
-						list.hide();
+						if(list.is(":visible")) {
+							el = list.children('li:visible').eq(currentSelection);
+							obj.val(el.text());
+							list.hide();
+						}
 						
 						// set hidden field value?
 						if(o.hiddenField) {
@@ -102,7 +109,7 @@
 						o.afterSelect(toJSON(el));
 					break;
 					
-					// perform AJAX request
+					// AJAX request / 
 					default:
 					
 						// perform query or just filter results?
@@ -168,10 +175,10 @@
 	 
 	// default options
 	$.fn.jsonComplete.defaults = {
-		id: 'autocomplete',        //
+		id: 'autocomplete',				//
 		hiddenField: 'jsoncomplete-value', //
-		data: {},                  //
-		afterSelect: function(){}  //
+		data: {},									//
+		afterSelect: function(){}	//
 	};
 	
 	// contains, case-insensitive
