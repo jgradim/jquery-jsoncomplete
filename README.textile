@@ -33,6 +33,10 @@ This plugin provides a new filter for jQuery, :contains-ci - it's basically :con
 
 h3. CHANGELOG
 
+h4. v0.92 Dec 20, 2009
+
+* Corrected logic for setting/unsetting hidden field value.
+
 h4. v0.91 Dec 18, 2009
 
 * Fixed a bug where a return keypress would clear the value of the field

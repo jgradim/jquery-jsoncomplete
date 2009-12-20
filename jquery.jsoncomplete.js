@@ -1,5 +1,5 @@
 /*
- * jsonComplete 0.91 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * jsonComplete 0.92 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
  *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
@@ -99,18 +99,21 @@
 							el = list.children('li:visible').eq(currentSelection);
 							obj.val(el.text());
 							list.hide();
-						}
 						
-						// set hidden field value?
-						if(o.hiddenField) {
-							$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
-						}
+							// set hidden field value?
+							if(o.hiddenField) {
+								$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
+							}
 						
-						o.afterSelect(toJSON(el));
+							o.afterSelect(toJSON(el));
+						}
 					break;
 					
 					// AJAX request / 
 					default:
+					
+						// clear value of hidden field
+							$('input#'+o.hiddenField).val('');	
 					
 						// perform query or just filter results?
 						if(!(o.data.value in querycache)) {
