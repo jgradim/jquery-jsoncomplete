@@ -1,5 +1,5 @@
 /*
- * jsonComplete 0.92 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * jsonComplete 0.93 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
  *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
@@ -105,7 +105,7 @@
 								$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
 							}
 						
-							o.afterSelect(toJSON(el));
+							o.afterSelect(ev, toJSON(el));
 						}
 					break;
 					
@@ -158,7 +158,7 @@
 					$('input#'+o.hiddenField).val(el.attr('id').numeralAfter('v-'));	
 				}
 						
-				o.afterSelect(toJSON(el));
+				o.afterSelect(ev, toJSON(el));
 			});
 		});
 	};
