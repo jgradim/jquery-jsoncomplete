@@ -22,6 +22,7 @@ h3. OPTIONS
 |*Option*|*Description*|*Default Value*|
 |id|Autocomplete list id|'autocomplete'|
 |hiddenField|if set to any string but @false@ it will create a hidden field with that @name@ and @id@ attributes that will hold the @id@ of the selected option.|'jsoncomplete-value'|
+|updateOnSelect|Update text field value when navigating the list with up/down keys|true|
 |data|extra data to send for the request. The plugin will always send @?value=$("input#id").val()@ in addition to these arguments.|{}|
 |afterSelect|Function to be performed after a click on a list element or a RETURN keypress. The JSON element is passed to the function.|function(event, selectedElement){}|
 
@@ -32,6 +33,10 @@ This plugin provides a new filter for jQuery, :contains-ci - it's basically :con
 ---
 
 h3. CHANGELOG
+
+h4. v0.94 May 17, 2010
+
+* Added updateOnSelect option, cleaned the code a little bit
 
 h4. v0.93 Jan 22, 2009
 
