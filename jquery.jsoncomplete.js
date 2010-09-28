@@ -1,5 +1,5 @@
 /*
- * jsonComplete 0.94 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
+ * jsonComplete 0.95 - Minimal jQuery plugin to provide autocomplete funcionality to text fields with JSON formated data
  *
  * http://github.com/jgradim/jquery-jsoncomplete/
  *
@@ -39,16 +39,29 @@
       }
       
       // filter visible elements
-      function filterVisible(){
+      function filterVisible() {
         $("ul#"+o.id+" li").show().not(':contains-ci("'+obj.val()+'")').hide();
         if($.trim(obj.val()) == '') {
           list.hide();
+          
+          // highlight search terms?
+          if(o.highlight) {
+            clearHighlights(o);
+          }
+          
           currentSelection = -1;
         }
         else {
           currentSelection = 0;
           list.show();
+          
           setSelected(list, currentSelection);
+          
+          // highlight search terms
+          if(o.highlight) {
+            clearHighlights(o);
+            highlightMatches(o); 
+          }
           
           // hide if no results found
           if($("ul#"+o.id+" li:visible").length == 0) {
@@ -56,6 +69,28 @@
             currentSelection = -1;          
           }
         }
+      }
+      
+      function highlightMatches(o) {
+        var keyword = obj.val();
+        var split_regex = new RegExp(keyword, "gi");
+        var match_regex = new RegExp("("+keyword+")", "gi");
+        $("ul#"+o.id+" li:visible").each(function(i, e) {
+          var s = $(e).text().split(split_regex);
+          var m = $(e).text().match(match_regex);
+          s = $.map(s, function(e,i){
+            if(i == 0) return e;
+            else return '<span class="'+o.highlightClass+'">'+m[i-1]+"</span>"+e;
+          }).join("");
+          $(e).html(s);
+        });
+      }
+      
+      //
+      function clearHighlights(o) {
+        $("ul#"+o.id+" li").each(function(i, e) {
+          $(e).html($(e).text());
+        });
       }
       
       //
@@ -111,6 +146,7 @@
           break;
           case 13: // RETURN
             if(list.is(":visible")) {
+              var el = list.children('li:visible').eq(currentSelection);
               updateField(o);
               list.hide();
               o.afterSelect(ev, toJSON(el));
@@ -186,11 +222,13 @@
    
   // default options
   $.fn.jsonComplete.defaults = {
-    id: 'autocomplete',                //
-    hiddenField: 'jsoncomplete-value', //
-    updateOnSelect: true,              //
-    data: {},                          //
-    afterSelect: function(){}          //
+    id: 'autocomplete',                       //
+    hiddenField: 'jsoncomplete-value',        //
+    updateOnSelect: true,                     //
+    highlight: true,                          //
+    highlightClass: 'jsoncomplete-highlight', //
+    data: {},                                 //
+    afterSelect: function(){}                 //
   };
   
   // contains, case-insensitive
@@ -203,6 +241,9 @@
   //
   String.prototype.numeralAfter = function(prefix) {  
     return this.match(RegExp(prefix+"(\\d+)"))[1];
+  }
+  String.prototype.capitalize = function() {  // http://www.mediacollege.com/internet/javascript/text/case-capitalize.html
+    return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
   }
 
 })(jQuery);
