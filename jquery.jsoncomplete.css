@@ -1,0 +1,17 @@
+body { font: 10pt/12pt normal bold Arial,Helvetica,sans-serif; color: #bbb; }
+form { position: relative; }
+ul#autocomplete {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	position: absolute;
+	z-index: 2;
+	width: 295px;
+	max-height: 260px;
+	overflow: auto;
+	background: #464646;
+	border: 1px solid #555;
+}
+ul#autocomplete li { padding: 5px; }
+ul#autocomplete li.selected {	background: #8a8a8a; }
+ul#autocomplete li .jsoncomplete-highlight { color: #eee; }
