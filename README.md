@@ -25,19 +25,19 @@ The remote call should return an array of JSON objects. The attributes of those 
 Options
 -------
 
-|Option             |Default Value  |Description|
-|-------------------|---------------|-----------|
-|url                |null           |URL used to perform the AJAX request. If set to `null`, defaults to parent `form` element `action` attribute|
-|id                 |'jsoncomplete' |Id given to the list that contains the autocomplete results|
-|class              |'jc-list'      |Class(es) given to the list that contains the autocomplete results|
-|highlight          |true           |Highlight the list element's text that matches the search terms (the value of the input)|
-|highlightClass     |'jc-highlight' |Class given to the highlighted text|
-|selectedClass      |'jc-selected'  |Class given to the currently selected search result|
-|dataObject         |'jc-object'    |`data` attribute where the original object from the request is saved for future usage|
-|keyupTimeout       |300            |Amount of time in miliseconds to delay the request after typing. This is used to reduce the number of requests to the server by waiting for the user to write all the terms|
-|updateOnSelect     |true           |If set to true, input value is set to the current selection while navigating, and not just on selection|
-|scrollOnNavigation |true           |Scroll the list when using keyboard navigation. Useful if you wnat to set `max-height` for the results list|
-|browserAutocomplete|false          |If set to false, `autocomplete="off"` will be added to the element's attributes to disable the browser's native autocomplete|
+    |Option             |Default Value  |Description  |
+    |-------------------|---------------|-------------|
+    |url                |null           |URL used to perform the AJAX request. If set to `null`, defaults to parent `form` element `action` attribute|
+    |id                 |'jsoncomplete' |Id given to the list that contains the autocomplete results|
+    |class              |'jc-list'      |Class(es) given to the list that contains the autocomplete results|
+    |highlight          |true           |Highlight the list element's text that matches the search terms (the value of the input)|
+    |highlightClass     |'jc-highlight' |Class given to the highlighted text|
+    |selectedClass      |'jc-selected'  |Class given to the currently selected search result|
+    |dataObject         |'jc-object'    |`data` attribute where the original object from the request is saved for future usage|
+    |keyupTimeout       |300            |Amount of time in miliseconds to delay the request after typing. This is used to reduce the number of requests to the server by waiting for the user to write all the terms|
+    |updateOnSelect     |true           |If set to true, input value is set to the current selection while navigating, and not just on selection|
+    |scrollOnNavigation |true           |Scroll the list when using keyboard navigation. Useful if you wnat to set `max-height` for the results list|
+    |browserAutocomplete|false          |If set to false, `autocomplete="off"` will be added to the element's attributes to disable the browser's native autocomplete|
 
 Callbacks
 ---------
